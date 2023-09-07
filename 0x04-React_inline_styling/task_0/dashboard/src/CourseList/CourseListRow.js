@@ -1,31 +1,47 @@
-#!/usr/bin/node
+import React from "react";
+import PropTypes from "prop-types";
 
-const request = require('request');
+const rowStyle = {
+  backgroundColor: "#f5f5f5ab",
+};
 
-const movieId = process.argv[2];
-const movieEndpoint = 'https://swapi-api.alx-tools.com/api/films/' + movieId;
+const headerStyle = {
+  backgroundColor: "#deb5b545",
+};
 
-function sendRequest (characterList, index) {
-  if (characterList.length === index) {
-    return;
-  }
-
-  request(characterList[index], (error, response, body) => {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log(JSON.parse(body).name);
-      sendRequest(characterList, index + 1);
-    }
-  });
+function CourseListRow({ isHeader, textFirstCell, textSecondCell }) {
+  return (
+    <tr style={rowStyle}>
+      {isHeader ? (
+        textSecondCell === null ? (
+          <th style={headerStyle} colSpan={2}>
+            {textFirstCell}
+          </th>
+        ) : (
+          <>
+            <th style={headerStyle}>{textFirstCell}</th>
+            <th style={headerStyle}>{textSecondCell}</th>
+          </>
+        )
+      ) : (
+        <>
+          <td>{textFirstCell}</td>
+          <td>{textSecondCell}</td>
+        </>
+      )}
+    </tr>
+  );
 }
 
-request(movieEndpoint, (error, response, body) => {
-  if (error) {
-    console.log(error);
-  } else {
-    const characterList = JSON.parse(body).characters;
+CourseListRow.propTypes = {
+  isHeader: PropTypes.bool,
+  textFirstCell: PropTypes.string.isRequired,
+  textSecondCell: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+};
 
-    sendRequest(characterList, 0);
-  }
-});
+CourseListRow.defaultProps = {
+  isHeader: false,
+  textSecondCell: null,
+};
+
+export default CourseListRow;
