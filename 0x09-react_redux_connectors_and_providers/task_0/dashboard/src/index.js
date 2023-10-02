@@ -1,8 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-//import './index.css';
-import App from './App/App';
-//import reportWebVitals from './reportWebVitals';
+import { createStore } from "redux";
+import { Provider } from "react-redux";
+import App from "./App/App";
+import uiReducer, { initialState } from "./reducers/uiReducer";
+import { Map } from "immutable";
+
+const store = createStore(uiReducer, Map(initialState));
+
 
 ReactDOM.render(
   <React.StrictMode>
